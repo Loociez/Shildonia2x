@@ -1,0 +1,533 @@
+/* =====================
+   GLOBAL / BACKGROUND
+===================== */
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #eee;
+
+  /* Rust-style textured background */
+  background:
+    radial-gradient(circle at top, rgba(255,120,40,0.06), transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.015),
+      rgba(255,255,255,0.015) 2px,
+      rgba(0,0,0,0.02) 2px,
+      rgba(0,0,0,0.02) 4px
+    ),
+    linear-gradient(180deg, #0c0c0c, #111 40%, #0b0b0b);
+
+  background-attachment: fixed;
+}
+
+/* Subtle noise overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+/* Keep content above texture */
+body * {
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px;
+}
+/* =====================
+   RUST INTRO – WOW EDITION
+===================== */
+
+#intro {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, #111 0%, #000 70%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ===== FLASH / BLAST ===== */
+
+.intro-flash {
+  position: absolute;
+  inset: -50%;
+  background:
+    radial-gradient(circle, rgba(255,140,26,0.9), transparent 60%);
+  animation: blastFlash 1.2s ease-out forwards;
+}
+
+@keyframes blastFlash {
+  0% { opacity: 1; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* ===== SHOCKWAVE RING ===== */
+
+#intro::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,120,40,0.8);
+  border-radius: 50%;
+  animation: shockwave 1.5s ease-out forwards;
+}
+
+@keyframes shockwave {
+  to {
+    transform: scale(90);
+    opacity: 0;
+  }
+}
+
+/* ===== SMOKE LAYERS ===== */
+
+#intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 70%, rgba(255,255,255,0.04), transparent 60%),
+    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.03), transparent 60%);
+  animation: smokeDrift 6s ease-in-out infinite alternate;
+}
+
+@keyframes smokeDrift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-40px); }
+}
+
+/* ===== REAL EMBERS / SPARKS ===== */
+
+.embers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ember {
+  position: absolute;
+  bottom: -10px;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, #ffb347 0%, #ff6a00 60%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: emberRise linear infinite;
+}
+
+/* Individual ember motion */
+@keyframes emberRise {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--drift), -120vh) scale(1.2);
+    opacity: 0;
+  }
+}
+/* ===== EMBER VARIATIONS ===== */
+
+.ember:nth-child(1)  { left: 10%;  animation-duration: 3.2s; --drift: -20px; }
+.ember:nth-child(2)  { left: 20%;  animation-duration: 4.5s; --drift: 15px; }
+.ember:nth-child(3)  { left: 30%;  animation-duration: 3.8s; --drift: -10px; }
+.ember:nth-child(4)  { left: 40%;  animation-duration: 5.2s; --drift: 25px; }
+.ember:nth-child(5)  { left: 50%;  animation-duration: 3.6s; --drift: -30px; }
+.ember:nth-child(6)  { left: 60%;  animation-duration: 4.9s; --drift: 20px; }
+.ember:nth-child(7)  { left: 70%;  animation-duration: 3.4s; --drift: -15px; }
+.ember:nth-child(8)  { left: 80%;  animation-duration: 5.6s; --drift: 30px; }
+.ember:nth-child(9)  { left: 90%;  animation-duration: 4.1s; --drift: -25px; }
+.ember:nth-child(10) { left: 15%;  animation-duration: 6s;   --drift: 10px; }
+.ember:nth-child(11) { left: 55%;  animation-duration: 3.9s; --drift: -18px; }
+.ember:nth-child(12) { left: 75%;  animation-duration: 5.3s; --drift: 22px; }
+
+
+/* ===== INTRO CONTENT & LOGO ===== */
+
+.intro-content {
+  text-align: center;
+  animation: introImpact 2.6s cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+/* Impact zoom + subtle shake */
+@keyframes introImpact {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.05);
+  }
+  65% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Large blocky Rust-themed logo */
+.intro-logo {
+  font-family: 'Russo One', 'Oxanium', sans-serif; /* Russo One is a great blocky font, fallback Oxanium */
+  font-size: 5rem;                /* Big */
+  font-weight: 700;
+  letter-spacing: 12px;           /* Spaced letters */
+  color: #ff7a00;                 /* Rust orange */
+  text-transform: uppercase;      /* All caps */
+  text-shadow:
+    0 0 20px rgba(255,110,0,0.9),
+    0 0 40px rgba(255,140,20,0.7),
+    0 0 60px rgba(255,180,40,0.5);
+  animation: logoFlicker 3s infinite;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Smaller "2X" below the main text */
+.intro-logo small {
+  display: block;
+  font-family: 'Russo One', 'Oxanium', sans-serif;
+  font-size: 2.8rem;
+  letter-spacing: 10px;
+  color: #ff9c1a;
+  text-shadow:
+    0 0 15px rgba(255,120,40,0.9),
+    0 0 30px rgba(255,140,0,0.6);
+  margin-top: 6px;
+  user-select: none;
+}
+
+/* Rust neon flicker */
+@keyframes logoFlicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 0.85; }
+  95% { opacity: 0.45; }
+  97% { opacity: 1; }
+}
+
+
+/* ===== FADE OUT ===== */
+
+.intro-hide {
+  animation: introFade 1.2s ease forwards;
+}
+
+@keyframes introFade {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* =====================
+   NAVIGATION
+===================== */
+
+nav {
+  background:
+    linear-gradient(180deg, rgba(25,25,25,0.95), rgba(10,10,10,0.95)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03),
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  border-bottom: 3px solid #e67e22;
+  backdrop-filter: blur(6px);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LOGO */
+.logo {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+
+  background: linear-gradient(90deg, #e67e22, #ffb347, #e67e22);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shine 3s linear infinite;
+
+  text-shadow:
+    0 0 12px rgba(255,140,40,0.4),
+    0 0 24px rgba(160,70,0,0.5);
+}
+
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #ff9c40;
+}
+
+/* =====================
+   HERO
+===================== */
+
+.hero-section {
+  position: relative;
+  height: 450px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.slideshow,
+.slide {
+  position: absolute;
+  inset: 0;
+}
+
+.slide {
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  filter: contrast(1.05) saturate(1.1);
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.85)
+    );
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 140px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 25px rgba(0,0,0,0.8);
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+
+.btn {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #ff7a18, #c94b00);
+  color: #111;
+  box-shadow: 0 0 15px rgba(255,120,40,0.5);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+/* =====================
+   ABOUT / CONTENT
+===================== */
+
+.section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
+
+.server-details {
+  columns: 2;
+  column-gap: 40px;
+}
+
+.server-details li {
+  margin-bottom: 8px;
+}
+
+/* MEDIA PANE */
+.media-pane {
+  margin: 40px auto;
+  max-width: 700px;
+  border: 3px solid #ff6a00;
+  border-radius: 10px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  box-shadow:
+    0 0 30px rgba(255,106,0,0.6),
+    inset 0 0 25px rgba(0,0,0,0.9);
+}
+
+.media-pane img {
+  width: 100%;
+  display: block;
+}
+
+/* =====================
+   WIPE / ALERTS
+===================== */
+
+.wipe-section {
+  background:
+    radial-gradient(circle at top, rgba(255,100,0,0.15), transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03),
+      rgba(255,255,255,0.03) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    #0b0b0b;
+  border-top: 3px solid #ff6a00;
+  border-bottom: 3px solid #ff6a00;
+}
+
+.alert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.alert-card {
+  background:
+    linear-gradient(180deg, #1a1a1a, #0d0d0d);
+  border: 2px solid #ff6a00;
+  padding: 25px;
+  text-align: center;
+  border-radius: 8px;
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px #ff6a00; }
+  50% { box-shadow: 0 0 25px #ff6a00; }
+  100% { box-shadow: 0 0 10px #ff6a00; }
+}
+
+.countdown {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff3c00;
+  text-shadow: 0 0 12px #ff3c00;
+}
+
+/* =====================
+   FOOTER
+===================== */
+
+footer {
+  background:
+    linear-gradient(180deg, #111, #070707);
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  border-top: 2px solid #222;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .server-details {
+    columns: 1;
+  }
+}
+/* Shared button base */
+.btn-discord,
+.btn-tiktok {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  font-weight: 700;
+  border-radius: 4px;
+  text-decoration: none;
+  color: white;
+  transition: filter 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Discord button style */
+.btn-discord {
+  background: #7289da; /* Discord blurple */
+  box-shadow: 0 0 15px rgba(114, 137, 218, 0.6);
+}
+
+.btn-discord:hover {
+  filter: brightness(1.1);
+}
+
+/* TikTok button style */
+.btn-tiktok {
+  background: linear-gradient(45deg, #69C9D0, #EE1D52); /* TikTok gradient */
+  box-shadow: 0 0 15px rgba(238, 29, 82, 0.7);
+}
+
+.btn-tiktok:hover {
+  filter: brightness(1.1);
+}

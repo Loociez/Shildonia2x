@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How Will Rust Screw You Today?</title>
+
+  <!-- Use main site styling -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- Fonts already used on your site -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-container">
+      <div class="logo">Shildonia 2x</div>
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">← Back to Home</a></li>
+        <li><a href="https://discord.gg/2AmRcZ6qQj" target="_blank" class="nav-link">Discord</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-section" style="height: 320px;">
+    <div class="container hero-content">
+      <h1>How Will Rust Screw You Today?</h1>
+      <p class="tagline">PVE Edition. No guns. Still pain.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="section">
+
+      <div class="alert-card" style="max-width: 700px; margin: auto;">
+        <h2>☠️ Today’s Misfortune</h2>
+
+        <p id="resultText" style="
+          font-size: 1.3rem;
+          margin: 25px 0;
+          min-height: 90px;
+          color: #ffb347;
+          text-shadow: 0 0 10px rgba(255,140,40,0.6);
+        ">
+          Click the button. Face your fate.
+        </p>
+
+        <button class="btn btn-primary" onclick="rollMisfortune()">
+          Reveal My Rust Fate
+        </button>
+
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #aaa;">
+          100% PVE-friendly suffering.
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-container">
+      <p>© 2026 Shildonia — Rust Always Wins</p>
+    </div>
+  </footer>
+
+  <script>
+    const misfortunes = [
+      // Original
+      "A bear silently appears behind you while farming wood.",
+      "You die to fall damage while carrying nothing but hope.",
+      "A scientist lasers you through fog from 200 meters.",
+      "Your horse launches itself into orbit and kills you.",
+      "You forget upkeep and your base begins returning to nature.",
+      "You loot an elite crate… and it’s all sewing kits.",
+      "A helicopter targets you for existing near a road.",
+      "You recycle too fast and accidentally delete your good gear.",
+      "Your minicopter explodes while parked perfectly still.",
+      "You AFK for 30 seconds and wake up dead.",
+      "A wolf follows you across the map purely out of spite.",
+      "You drown in water that looks waist-deep.",
+      "Your furnace eats all your wood and gives nothing back.",
+      "Bradley decides today is your day.",
+      "Your base is safe… until decay remembers you.",
+      "You fall off a monument ladder like a professional idiot.",
+      "You run a monument flawlessly… then die to cold.",
+      "Your loot run goes perfectly until the last jump.",
+      "You respawn naked exactly where you died.",
+      "You forget to lock a door. Rust notices.",
+      "You survive everything… then bleed out from a cactus.",
+      "A boar tanks more damage than you emotionally can.",
+      "You cook food and forget it. Charcoal dinner.",
+      "Your sleeping bag places you inside a rock.",
+      "You jump off a cliff thinking you’re closer to the ground.",
+      "You open your inventory and die anyway.",
+      "You chase a deer for 10 minutes and get nothing.",
+      "You log in just in time to watch your base decay.",
+      "You repair the wrong thing. Twice.",
+      "You climb a tower and immediately regret it.",
+      "You loot a crate that was definitely not worth it.",
+      "Your torch attracts everything hostile within 3km.",
+      "You step on a landmine that was clearly visible.",
+      "You forget you’re starving while organizing boxes.",
+      "You respawn at the wrong base. Again.",
+      "You die to cold while wearing armor.",
+      "You build the base perfectly… rotated wrong.",
+      "You misjudge one jump and Rust remembers forever.",
+      "You recycle one component too many.",
+      "Your horse chooses violence.",
+      "You aggro scientists by looking at them.",
+      "You fall asleep next to a campfire.",
+      "You forget to place a door after upgrading.",
+      "You open a crate and immediately panic.",
+      "You hear footsteps. It’s a pig.",
+      "You walk into barbed wire like it insulted you.",
+      "You die because you thought you had more health.",
+      "You place a wall backwards and stare at it.",
+      "You sprint everywhere and wonder why you’re dying.",
+      "You try to be efficient. Rust disagrees.",
+      "You trust ladders. Rust punishes trust.",
+      "You jump before looking.",
+      "You survive the monument and die outside it.",
+      "You craft meds and never use them.",
+      "You forget where you parked the minicopter.",
+      "You jump scare yourself with your own footsteps.",
+      "You live dangerously for absolutely no reason.",
+      "You say “I’ll be fine” right before dying.",
+      "You misclick and chaos follows.",
+      "Rust humbles you for existing."
+    ];
+
+    function rollMisfortune() {
+      const result = document.getElementById("resultText");
+      const choice = misfortunes[Math.floor(Math.random() * misfortunes.length)];
+
+      result.style.opacity = 0;
+
+      setTimeout(() => {
+        result.textContent = choice;
+        result.style.opacity = 1;
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>

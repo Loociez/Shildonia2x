@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Shildonia RNG Selector</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  /* Additional glitch styles for intro */
+  #intro {
+    position: fixed;
+    inset: 0;
+    background: #0f0f0f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    user-select: none;
+  }
+  .logo {
+    font-size: 7rem;
+    font-weight: 700;
+    color: #e67e22;
+    letter-spacing: 8px;
+    text-shadow:
+      0 0 6px #ff6f00,
+      0 0 12px #e67e22,
+      0 0 18px #b35700;
+    position: relative;
+    animation: flicker 3.5s linear forwards;
+  }
+  .subtitle {
+    margin-top: 0.5rem;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: #ff3f3f;
+    text-shadow:
+      0 0 8px #ff3f3f,
+      0 0 12px #ff0000;
+    font-weight: 700;
+    opacity: 0;
+    animation: subtitleFadeIn 3.5s forwards;
+    animation-delay: 1s;
+    font-family: 'Oswald', sans-serif;
+  }
+
+  /* Flicker animation simulating glitch */
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+      text-shadow:
+        0 0 6px #ff6f00,
+        0 0 12px #e67e22,
+        0 0 18px #b35700;
+      transform: translate(0, 0);
+    }
+    20%, 22%, 24%, 55% {
+      opacity: 0.4;
+      text-shadow: none;
+      transform: translate(-2px, 1px);
+    }
+  }
+  @keyframes subtitleFadeIn {
+    to {
+      opacity: 1;
+      text-shadow:
+        0 0 12px #ff3f3f,
+        0 0 24px #ff0000;
+    }
+  }
+
+  /* Scan line effect */
+  #intro::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.02),
+        rgba(255,255,255,0.02) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+    animation: scanlinesMove 3s linear infinite;
+  }
+  @keyframes scanlinesMove {
+    0% { background-position-y: 0; }
+    100% { background-position-y: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="logo">RUST</div>
+  <div class="subtitle">Good Luck Survivor!</div>
+</div>
+
+<div id="app" class="hidden">
+
+  <h1>⚙️ Shildonia RNG Selector</h1>
+
+  <textarea id="names" placeholder="Enter player names (one per line)"></textarea>
+  <button id="spinBtn" onclick="startSpin()" disabled>SPIN</button>
+
+  <div id="selector" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="winner" class="winner hidden" role="alert" aria-live="polite"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+  // Explosion sound using Web Audio API
+  function playExplosion() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(100, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
+
+    gain.gain.setValueAtTime(1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 1);
+  }
+
+  // Remove intro after 4 seconds and play sound
+  setTimeout(() => {
+    playExplosion();
+    const intro = document.getElementById('intro');
+    intro.style.transition = 'opacity 1s ease';
+    intro.style.opacity = 0;
+    setTimeout(() => intro.remove(), 1000);
+    document.getElementById('app').classList.remove('hidden');
+  }, 4000);
+</script>
+
+</body>
+</html>
